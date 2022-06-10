@@ -1,0 +1,11 @@
+<idea-plugin>
+  <id>com.chylex.intellij.rider.vcsgroupbyproject.VcsGroupByProject</id>
+  <name>VCS: Group By Project</name>
+  <vendor url="https://chylex.com">chylex</vendor>
+  
+  <description><![CDATA[
+    Adds option to group version control changes by project.
+  ]]></description>
+  
+  <depends>com.intellij.modules.rider</depends>
+</idea-plugin>
