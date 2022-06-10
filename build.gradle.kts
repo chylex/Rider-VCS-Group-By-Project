@@ -18,6 +18,11 @@ intellij {
 	updateSinceUntilBuild.set(false)
 }
 
+tasks.patchPluginXml {
+	sinceBuild.set("211")
+	untilBuild.set("222") // 222 requires a rebuild
+}
+
 tasks.buildSearchableOptions {
 	enabled = false
 }

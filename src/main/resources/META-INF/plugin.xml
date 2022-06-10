@@ -8,4 +8,14 @@
   ]]></description>
   
   <depends>com.intellij.modules.rider</depends>
+  
+  <extensions defaultExtensionNs="com.intellij">
+    <changesGroupingPolicy key="module" id="module" implementationClass="com.chylex.intellij.rider.vcsgroupbyproject.ProjectChangesGroupingPolicy$Factory" />
+  </extensions>
+  
+  <actions>
+    <action id="ChangesView.GroupBy.Project" class="com.chylex.intellij.rider.vcsgroupbyproject.SetProjectChangesGroupingAction" text="Project" description="Group by project">
+      <add-to-group group-id="ChangesView.GroupBy" anchor="last" />
+    </action>
+  </actions>
 </idea-plugin>
