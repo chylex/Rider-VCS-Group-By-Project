@@ -1,2 +1,9 @@
+/.idea/dictionaries
+/.idea/inspectionProfiles
+/.idea/jarRepositories.xml
+/.idea/misc.xml
+/.idea/*.iml
+/.idea/.name
+
 /.gradle/
 /build/
