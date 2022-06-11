@@ -5,6 +5,10 @@
   
   <description><![CDATA[
     Adds option to group version control changes by project.
+    <br><br>
+    The option is available in every panel that shows changed files in version control, for ex. in Local Changes / Shelf / Log.
+    <br><br>
+    Click the 'Group By' icon in the panel's toolbar and select 'Project' to group files by project, or both 'Project' and 'Directory' to first group by project and then by directory.
   ]]></description>
   
   <depends>com.intellij.modules.rider</depends>
