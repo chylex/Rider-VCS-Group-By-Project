@@ -11,6 +11,12 @@
     Click the 'Group By' icon in the panel's toolbar and select 'Project' to group files by project, or both 'Project' and 'Directory' to first group by project and then by directory.
   ]]></description>
   
+  <change-notes><![CDATA[
+    <ul>
+      <li>Fixed grouping files belonging to multiple projects under a random project.</li>
+    </ul>
+  ]]></change-notes>
+  
   <depends>com.intellij.modules.rider</depends>
   
   <extensions defaultExtensionNs="com.intellij">
