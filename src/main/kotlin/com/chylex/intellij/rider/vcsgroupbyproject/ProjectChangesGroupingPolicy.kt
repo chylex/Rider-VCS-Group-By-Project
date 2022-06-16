@@ -8,14 +8,20 @@ import com.intellij.openapi.vcs.changes.ui.ChangesBrowserNode
 import com.intellij.openapi.vcs.changes.ui.ChangesGroupingPolicyFactory
 import com.intellij.openapi.vcs.changes.ui.StaticFilePath
 import com.intellij.openapi.vcs.changes.ui.TreeModelBuilder
+import com.intellij.openapi.vfs.VirtualFile
 import com.intellij.vcsUtil.VcsUtil
+import com.intellij.workspaceModel.ide.WorkspaceModel
 import com.jetbrains.rider.model.RdCustomLocation
 import com.jetbrains.rider.model.RdProjectDescriptor
 import com.jetbrains.rider.model.RdProjectModelItemDescriptor
 import com.jetbrains.rider.model.RdUnloadProjectDescriptor
 import com.jetbrains.rider.projectView.workspace.ProjectModelEntity
-import com.jetbrains.rider.projectView.workspace.containingEntity
 import com.jetbrains.rider.projectView.workspace.containingProjectEntity
+import com.jetbrains.rider.projectView.workspace.getProjectModelEntities
+import com.jetbrains.rider.projectView.workspace.isProject
+import com.jetbrains.rider.projectView.workspace.isProjectFile
+import com.jetbrains.rider.projectView.workspace.isProjectFolder
+import com.jetbrains.rider.projectView.workspace.isUnloadedProject
 import java.io.File
 import javax.swing.tree.DefaultTreeModel
 
@@ -28,7 +34,7 @@ class ProjectChangesGroupingPolicy(private val project: Project, private val mod
 			return nextPolicyParent
 		}
 		
-		val descriptor = file.containingEntity(project)?.let(ProjectModelEntity::containingProjectEntity)?.descriptor
+		val descriptor = getSingleProjectEntity(file, project)?.descriptor
 		if (descriptor !is RdProjectDescriptor && descriptor !is RdUnloadProjectDescriptor) {
 			return nextPolicyParent
 		}
@@ -60,6 +66,41 @@ class ProjectChangesGroupingPolicy(private val project: Project, private val mod
 	private companion object {
 		private val NODE_CACHE = NotNullLazyKey.create<MutableMap<RdProjectModelItemDescriptor?, ChangesBrowserNode<*>>, ChangesBrowserNode<*>>("ChangesTree.ProjectCache") {
 			mutableMapOf()
+		}
+		
+		@Suppress("UnstableApiUsage")
+		private fun getSingleProjectEntity(file: VirtualFile, project: Project): ProjectModelEntity? {
+			val workspaceModel = WorkspaceModel.getInstance(project)
+			val entities = walkFileParentsUntilResultIsNotEmpty(file) { workspaceModel.getProjectModelEntities(it, project) }
+			if (entities == null) {
+				return null
+			}
+			
+			return entities
+				.filter(::isProjectOrProjectFile)
+				.map(ProjectModelEntity::containingProjectEntity)
+				.toSet()
+				.singleOrNull()
+		}
+		
+		private inline fun <T> walkFileParentsUntilResultIsNotEmpty(leafFile: VirtualFile, getValue: (VirtualFile) -> List<T>?): List<T>? {
+			var file: VirtualFile? = leafFile
+			
+			while (file != null) {
+				val value = getValue(file)
+				if (value.isNullOrEmpty()) {
+					file = file.parent
+				}
+				else {
+					return value
+				}
+			}
+			
+			return null
+		}
+		
+		private fun isProjectOrProjectFile(entity: ProjectModelEntity): Boolean {
+			return entity.isProjectFile() || entity.isProjectFolder() || entity.isProject() || entity.isUnloadedProject()
 		}
 		
 		private fun getFolder(descriptor: RdProjectModelItemDescriptor): FilePath? {
