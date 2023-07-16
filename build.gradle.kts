@@ -20,12 +20,12 @@ kotlin {
 
 intellij {
 	type.set("RD")
-	version.set("2023.1")
+	version.set("2023.2-SNAPSHOT")
 	updateSinceUntilBuild.set(false)
 }
 
 tasks.patchPluginXml {
-	sinceBuild.set("231")
+	sinceBuild.set("232")
 }
 
 tasks.buildSearchableOptions {

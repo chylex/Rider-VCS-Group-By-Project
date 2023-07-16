@@ -8,6 +8,7 @@ import com.intellij.openapi.vcs.changes.ui.ChangesBrowserNodeRenderer
 import com.jetbrains.rider.model.RdCustomLocation
 import com.jetbrains.rider.model.RdProjectModelItemDescriptor
 import java.io.File
+import java.io.Serial
 
 class ChangesBrowserProjectNode(private val descriptor: RdProjectModelItemDescriptor) : ChangesBrowserNode<RdProjectModelItemDescriptor>(descriptor) {
 	private val type = getType(descriptor)
@@ -30,6 +31,7 @@ class ChangesBrowserProjectNode(private val descriptor: RdProjectModelItemDescri
 	}
 	
 	companion object {
+		@Serial
 		private const val serialVersionUID = 2641007635909904963L
 		
 		private fun getType(descriptor: RdProjectModelItemDescriptor): FileType? {

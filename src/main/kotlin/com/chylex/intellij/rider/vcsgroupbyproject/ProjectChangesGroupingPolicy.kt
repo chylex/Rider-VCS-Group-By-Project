@@ -9,8 +9,8 @@ import com.intellij.openapi.vcs.changes.ui.ChangesGroupingPolicyFactory
 import com.intellij.openapi.vcs.changes.ui.StaticFilePath
 import com.intellij.openapi.vcs.changes.ui.TreeModelBuilder
 import com.intellij.openapi.vfs.VirtualFile
+import com.intellij.platform.backend.workspace.WorkspaceModel
 import com.intellij.vcsUtil.VcsUtil
-import com.intellij.workspaceModel.ide.WorkspaceModel
 import com.jetbrains.rider.model.RdCustomLocation
 import com.jetbrains.rider.model.RdProjectDescriptor
 import com.jetbrains.rider.model.RdProjectModelItemDescriptor
@@ -64,11 +64,10 @@ class ProjectChangesGroupingPolicy(private val project: Project, private val mod
 	}
 	
 	private companion object {
-		private val NODE_CACHE = NotNullLazyKey.create<MutableMap<RdProjectModelItemDescriptor?, ChangesBrowserNode<*>>, ChangesBrowserNode<*>>("ChangesTree.ProjectCache") {
+		private val NODE_CACHE = NotNullLazyKey.createLazyKey<MutableMap<RdProjectModelItemDescriptor?, ChangesBrowserNode<*>>, ChangesBrowserNode<*>>("ChangesTree.ProjectCache") {
 			mutableMapOf()
 		}
 		
-		@Suppress("UnstableApiUsage")
 		private fun getSingleProjectEntity(file: VirtualFile, project: Project): ProjectModelEntity? {
 			val workspaceModel = WorkspaceModel.getInstance(project)
 			val entities = walkFileParentsUntilResultIsNotEmpty(file) { workspaceModel.getProjectModelEntities(it, project) }
