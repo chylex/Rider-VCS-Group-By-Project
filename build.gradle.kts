@@ -3,8 +3,8 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-	kotlin("jvm") version "1.6.21"
-	id("org.jetbrains.intellij") version "1.7.0"
+	kotlin("jvm") version "1.8.0"
+	id("org.jetbrains.intellij") version "1.15.0"
 }
 
 group = "com.chylex.intellij.rider.vcsgroupbyproject"
@@ -14,14 +14,18 @@ repositories {
 	mavenCentral()
 }
 
+kotlin {
+	jvmToolchain(17)
+}
+
 intellij {
 	type.set("RD")
-	version.set("2022.2")
+	version.set("2023.1")
 	updateSinceUntilBuild.set(false)
 }
 
 tasks.patchPluginXml {
-	sinceBuild.set("222")
+	sinceBuild.set("231")
 }
 
 tasks.buildSearchableOptions {
@@ -29,8 +33,7 @@ tasks.buildSearchableOptions {
 }
 
 tasks.withType<KotlinCompile> {
-	kotlinOptions.jvmTarget = "11"
 	kotlinOptions.freeCompilerArgs = listOf(
-		"-Xjvm-default=enable"
+		"-Xjvm-default=all"
 	)
 }
