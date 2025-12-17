@@ -1,10 +1,8 @@
 @file:Suppress("ConvertLambdaToReference")
 
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-
 plugins {
-	kotlin("jvm") version "1.8.0"
-	id("org.jetbrains.intellij") version "1.15.0"
+	kotlin("jvm")
+	id("org.jetbrains.intellij.platform")
 }
 
 group = "com.chylex.intellij.rider.vcsgroupbyproject"
@@ -12,28 +10,50 @@ version = "1.0.3"
 
 repositories {
 	mavenCentral()
+	
+	intellijPlatform {
+		defaultRepositories()
+	}
+}
+
+dependencies {
+	intellijPlatform {
+		rider("2025.3") {
+			useInstaller = false
+		}
+		
+		bundledModules("intellij.platform.vcs.impl")
+		bundledModules("intellij.platform.vcs.impl.shared")
+	}
+}
+
+intellijPlatform {
+	pluginConfiguration {
+		ideaVersion {
+			sinceBuild.set("253")
+			untilBuild.set(provider { null })
+		}
+	}
+	
+	pluginVerification {
+		freeArgs.add("-mute")
+		freeArgs.add("TemplateWordInPluginId")
+		
+		ides {
+			recommended()
+		}
+	}
+	
+	buildSearchableOptions = false
 }
 
 kotlin {
-	jvmToolchain(17)
-}
-
-intellij {
-	type.set("RD")
-	version.set("2023.2-SNAPSHOT")
-	updateSinceUntilBuild.set(false)
-}
-
-tasks.patchPluginXml {
-	sinceBuild.set("232")
-}
-
-tasks.buildSearchableOptions {
-	enabled = false
-}
-
-tasks.withType<KotlinCompile> {
-	kotlinOptions.freeCompilerArgs = listOf(
-		"-Xjvm-default=all"
-	)
+	jvmToolchain(21)
+	
+	compilerOptions {
+		freeCompilerArgs = listOf(
+			"-X" + "jvm-default=all",
+			"-X" + "lambdas=indy"
+		)
+	}
 }
