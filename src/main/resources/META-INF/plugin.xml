@@ -12,6 +12,10 @@
   ]]></description>
   
   <change-notes><![CDATA[
+    <b>Version 1.0.5</b>
+    <ul>
+      <li>Updated for Rider 2026.1.</li>
+    </ul>
     <b>Version 1.0.4</b>
     <ul>
       <li>Updated for Rider 2025.3.</li>
