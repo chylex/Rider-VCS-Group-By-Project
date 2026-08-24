@@ -18,19 +18,20 @@ repositories {
 
 dependencies {
 	intellijPlatform {
-		rider("2025.3") {
+		rider("2026.1") {
 			useInstaller = false
 		}
 		
 		bundledModules("intellij.platform.vcs.impl")
 		bundledModules("intellij.platform.vcs.impl.shared")
+		bundledModules("intellij.rider.rdclient.dotnet")
 	}
 }
 
 intellijPlatform {
 	pluginConfiguration {
 		ideaVersion {
-			sinceBuild.set("253")
+			sinceBuild.set("261")
 			untilBuild.set(provider { null })
 		}
 	}

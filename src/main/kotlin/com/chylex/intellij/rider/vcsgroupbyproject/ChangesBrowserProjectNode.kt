@@ -40,7 +40,7 @@ class ChangesBrowserProjectNode(private val descriptor: RdProjectModelItemDescri
 				return null
 			}
 			
-			val fileExtension = File(location.customLocation).extension
+			val fileExtension = File(location.customLocation.value).extension
 			val fileType = FileTypeRegistry.getInstance().getFileTypeByExtension(fileExtension)
 			
 			return fileType.takeUnless { it === UnknownFileType.INSTANCE }
